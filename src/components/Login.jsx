@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
 
-const MASTER_PHRASE = "1botGT";
+// const MASTER_PHRASE = "1botGT";
 
 function Login({ onLogin }) {
-  const [phrase, setPhrase] = useState("");
+  // const [phrase, setPhrase] = useState("");
 
-  const handleMasterPhraseLogin = () => {
-    if (phrase === MASTER_PHRASE) {
-      onLogin(true);
-    } else {
-      alert("Frase maestra incorrecta. Por favor intenta de nuevo.");
-    }
-  };
+  // const handleMasterPhraseLogin = () => {
+  //   if (phrase === MASTER_PHRASE) {
+  //     onLogin(true);
+  //   } else {
+  //     alert("Frase maestra incorrecta. Por favor intenta de nuevo.");
+  //   }
+  // };
 
   const handleGoogleLoginSuccess = (credentialResponse) => {
     console.log("Inicio con Google Exitoso:", credentialResponse);
@@ -56,7 +56,7 @@ function Login({ onLogin }) {
         >
           Inicio de Sesión
         </h2>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label
             htmlFor="masterPhrase"
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -80,7 +80,7 @@ function Login({ onLogin }) {
           >
             Ingresar
           </button>
-        </div>
+        </div> */}
         <div className="mb-4">
           <div id="google-login-button"></div>
         </div>
