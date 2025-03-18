@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#google-login-button {
+  width: 100% !important;
+}
+
+#google-login-button > div,
+#google-login-button iframe {
+  width: 100% !important;
+}

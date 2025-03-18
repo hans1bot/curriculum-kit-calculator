@@ -33,7 +33,12 @@ function Login({ onLogin }) {
         });
         window.google.accounts.id.renderButton(
           document.getElementById("google-login-button"),
-          { theme: "outline", size: "large" }
+          {
+            theme: "outline",
+            size: "large",
+            width: "100%",
+            type: "standard",
+          }
         );
       } else {
         // If window.google is not available, try again after a short delay
@@ -81,8 +86,12 @@ function Login({ onLogin }) {
             Ingresar
           </button>
         </div> */}
-        <div className="mb-4">
-          <div id="google-login-button"></div>
+        <div className="mb-4 w-full">
+          <div
+            id="google-login-button"
+            className="w-full"
+            style={{ display: "flex", justifyContent: "center" }}
+          ></div>
         </div>
       </div>
     </div>
