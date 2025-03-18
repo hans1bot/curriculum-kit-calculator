@@ -1,5 +1,6 @@
 import React from "react";
 import { Printer } from "lucide-react";
+import logo from "../assets/logo.svg";
 
 const FACTOR_CONVERSION = 7.5; // Q7.5 = $1
 
@@ -11,6 +12,8 @@ const OrderPrint = ({ results }) => {
 
     const printWindow = window.open("", "_blank");
 
+    const logoUrl = logo;
+
     const printContent = `
       <!DOCTYPE html>
       <html>
@@ -18,10 +21,17 @@ const OrderPrint = ({ results }) => {
         <title>Orden de Pedido de Kits</title>
         <meta charset="utf-8">
         <style>
+          @page {
+            size: auto;
+            margin: 0mm;
+          }
           body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            /* Aseguramos que el contenido cabe en una sola página */
+            max-width: 210mm;
+            box-sizing: border-box;
           }
           .header {
             text-align: center;
@@ -34,6 +44,10 @@ const OrderPrint = ({ results }) => {
             font-size: 24px;
             margin: 0 0 5px 0;
           }
+          .logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+          }
           .order-info {
             display: flex;
             justify-content: space-between;
@@ -43,6 +57,7 @@ const OrderPrint = ({ results }) => {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            page-break-inside: avoid;
           }
           th, td {
             border: 1px solid #ddd;
@@ -57,7 +72,8 @@ const OrderPrint = ({ results }) => {
             background-color: #f9f9f9;
           }
           .section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
           }
           .section h2 {
             font-size: 18px;
@@ -68,8 +84,9 @@ const OrderPrint = ({ results }) => {
           .validation {
             padding: 10px;
             border-radius: 4px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
+            page-break-inside: avoid;
           }
           .validation.valid {
             background-color: #e8f5e9;
@@ -81,188 +98,186 @@ const OrderPrint = ({ results }) => {
             border: 1px solid #ef9a9a;
             color: #b71c1c;
           }
-          .signatures {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-          }
-          .signature {
-            width: 45%;
-            text-align: center;
-          }
-          .signature-line {
-            border-top: 1px solid #000;
-            padding-top: 5px;
-          }
           .footer {
-            margin-top: 50px;
+            margin-top: 20px;
             border-top: 1px solid #ccc;
             padding-top: 10px;
             text-align: center;
             font-size: 12px;
             color: #666;
+            page-break-inside: avoid;
+          }
+          /* Control para evitar saltos de página inesperados */
+          .page {
+            page-break-after: always;
+          }
+          .page:last-child {
+            page-break-after: avoid;
           }
         </style>
       </head>
       <body>
-        <div class="header">
-          <h1>ORDEN DE PEDIDO DE KITS</h1>
-          <p>1bot Kits</p>
-        </div>
-        
-        <div class="order-info">
-          <div>
-            <p><strong>Fecha:</strong> ${getCurrentDate()}</p>
-            <p><strong>No. Orden:</strong> ${getOrderNumber()}</p>
+        <div class="page">
+          <div class="header">
+            <div class="logo-container">
+              <img src="${logoUrl}" alt="Logo" style="height: 50px;" />
+            </div>
           </div>
-          <div>
-            <p><strong>Total de Niños:</strong> ${formatInteger(
-              results.totalChildren
-            )}</p>
-            <p><strong>Valor del Ticket:</strong> Q${formatCurrency(
-              results.ticketAmount
-            )}</p>
-            <p><strong>Estado:</strong> ${
-              results.isValid ? "ACEPTABLE" : "NO ACEPTABLE"
-            }</p>
+
+          <div class="order-info">
+            <div>
+              <p><strong>Fecha:</strong> ${getCurrentDate()}</p>
+              <p><strong>No. Orden:</strong> ${getOrderNumber()}</p>
+            </div>
+            <div>
+              <p><strong>Total de Niños:</strong> ${formatInteger(
+                results.totalChildren
+              )}</p>
+              <p><strong>Valor del Ticket:</strong> Q${formatCurrency(
+                results.ticketAmount
+              )}</p>
+              <p><strong>Estado:</strong> ${
+                results.isValid ? "ACEPTABLE" : "NO ACEPTABLE"
+              }</p>
+            </div>
           </div>
-        </div>
-        
-        <div class="section">
-          <h2>Detalle de Pedido</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>División</th>
-                <th>Tipo de Kit</th>
-                <th style="text-align: right">Estudiantes</th>
-                <th style="text-align: right">Cantidad Kits</th>
-                <th style="text-align: right">Precio Unitario</th>
-                <th style="text-align: right">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${Object.entries(results.details)
-                .filter(([_, info]) => info.students > 0)
-                .map(
-                  ([division, info]) => `
+
+          <div class="section">
+            <h2>Detalle de Pedido</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>División</th>
+                  <th>Tipo de Kit</th>
+                  <th style="text-align: right">Estudiantes</th>
+                  <th style="text-align: right">Cantidad Kits</th>
+                  <th style="text-align: right">Precio Unitario</th>
+                  <th style="text-align: right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${Object.entries(results.details)
+                  .filter(([_, info]) => info.students > 0)
+                  .map(
+                    ([division, info]) => `
+                    <tr>
+                      <td>${division}</td>
+                      <td style="text-align: center">
+                        ${
+                          division === "Preescolar"
+                            ? "mTiny"
+                            : division === "Primaria Baja"
+                            ? "Codey Rocky"
+                            : division === "Primaria Alta" ||
+                              division === "Secundaria Baja"
+                            ? "mBot"
+                            : "mBot2"
+                        }
+                      </td>
+                      <td style="text-align: right">${formatInteger(
+                        info.students
+                      )}</td>
+                      <td style="text-align: right">${formatInteger(
+                        info.kits
+                      )}</td>
+                      <td style="text-align: right">Q${formatCurrency(
+                        info.kitPrice * FACTOR_CONVERSION
+                      )}</td>
+                      <td style="text-align: right">Q${formatCurrency(
+                        info.cost * FACTOR_CONVERSION
+                      )}</td>
+                    </tr>
+                  `
+                  )
+                  .join("")}
+                ${
+                  results.customKitsCostQuetzales > 0
+                    ? `
                   <tr>
-                    <td>${division}</td>
-                    <td style="text-align: center">
-                      ${
-                        division === "Preescolar"
-                          ? "mTiny"
-                          : division === "Primaria Baja"
-                          ? "Codey Rocky"
-                          : division === "Primaria Alta" ||
-                            division === "Secundaria Baja"
-                          ? "mBot"
-                          : "mBot2"
-                      }
-                    </td>
-                    <td style="text-align: right">${formatInteger(
-                      info.students
-                    )}</td>
-                    <td style="text-align: right">${formatInteger(
-                      info.kits
-                    )}</td>
+                    <td colspan="4">Kits Propios</td>
+                    <td style="text-align: right">-</td>
                     <td style="text-align: right">Q${formatCurrency(
-                      info.kitPrice * FACTOR_CONVERSION
-                    )}</td>
-                    <td style="text-align: right">Q${formatCurrency(
-                      info.cost * FACTOR_CONVERSION
+                      results.customKitsCostQuetzales
                     )}</td>
                   </tr>
                 `
-                )
-                .join("")}
-              ${
-                results.customKitsCostQuetzales > 0
-                  ? `
+                    : ""
+                }
+              </tbody>
+              <tfoot>
                 <tr>
-                  <td colspan="4">Kits Propios</td>
-                  <td style="text-align: right">-</td>
-                  <td style="text-align: right">Q${formatCurrency(
-                    results.customKitsCostQuetzales
+                  <td colspan="5"><strong>Total</strong></td>
+                  <td style="text-align: right"><strong>Q${formatCurrency(
+                    results.completeCostQuetzales
+                  )}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="section">
+            <h2>Información de Licencias</h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td><strong>Total de Niños:</strong></td>
+                  <td style="text-align: right">${formatInteger(
+                    results.totalChildren
                   )}</td>
                 </tr>
-              `
-                  : ""
-              }
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="5"><strong>Total</strong></td>
-                <td style="text-align: right"><strong>Q${formatCurrency(
-                  results.completeCostQuetzales
-                )}</strong></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        
-        <div class="section">
-          <h2>Información de Licencias</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td><strong>Total de Niños:</strong></td>
-                <td style="text-align: right">${formatInteger(
-                  results.totalChildren
-                )}</td>
-              </tr>
-              <tr>
-                <td><strong>Costo por Licencia:</strong></td>
-                <td style="text-align: right">Q${formatCurrency(
-                  results.licenseCost
-                )}</td>
-              </tr>
-              ${
-                results.discountEnabled && results.licenseDiscountPercent > 0
-                  ? `
                 <tr>
-                  <td><strong>Descuento Aplicado:</strong></td>
-                  <td style="text-align: right">${results.licenseDiscountPercent}%</td>
+                  <td><strong>Costo por Licencia:</strong></td>
+                  <td style="text-align: right">Q${formatCurrency(
+                    results.licenseCost
+                  )}</td>
                 </tr>
-              `
-                  : ""
+                ${
+                  results.discountEnabled && results.licenseDiscountPercent > 0
+                    ? `
+                  <tr>
+                    <td><strong>Descuento Aplicado:</strong></td>
+                    <td style="text-align: right">${results.licenseDiscountPercent}%</td>
+                  </tr>
+                `
+                    : ""
+                }
+                <tr style="border-top: 1px solid #eee">
+                  <td><strong>Valor Total del Ticket:</strong></td>
+                  <td style="text-align: right"><strong>Q${formatCurrency(
+                    results.ticketAmount
+                  )}</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>20% del Ticket (límite):</strong></td>
+                  <td style="text-align: right">Q${formatCurrency(
+                    results.ticketPercentageQuetzales
+                  )}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="validation ${results.isValid ? "valid" : "invalid"}">
+            <p><strong>
+              ${
+                results.isValid
+                  ? `El pedido es ACEPTABLE. El costo total (Q${formatCurrency(
+                      results.completeCostQuetzales
+                    )}) no supera el 20% del ticket (Q${formatCurrency(
+                      results.ticketPercentageQuetzales
+                    )}).`
+                  : `El pedido NO es ACEPTABLE. El costo total (Q${formatCurrency(
+                      results.completeCostQuetzales
+                    )}) supera el 20% del ticket (Q${formatCurrency(
+                      results.ticketPercentageQuetzales
+                    )}).`
               }
-              <tr style="border-top: 1px solid #eee">
-                <td><strong>Valor Total del Ticket:</strong></td>
-                <td style="text-align: right"><strong>Q${formatCurrency(
-                  results.ticketAmount
-                )}</strong></td>
-              </tr>
-              <tr>
-                <td><strong>20% del Ticket (límite):</strong></td>
-                <td style="text-align: right">Q${formatCurrency(
-                  results.ticketPercentageQuetzales
-                )}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="validation ${results.isValid ? "valid" : "invalid"}">
-          <p><strong>
-            ${
-              results.isValid
-                ? `El pedido es ACEPTABLE. El costo total (Q${formatCurrency(
-                    results.completeCostQuetzales
-                  )}) no supera el 20% del ticket (Q${formatCurrency(
-                    results.ticketPercentageQuetzales
-                  )}).`
-                : `El pedido NO es ACEPTABLE. El costo total (Q${formatCurrency(
-                    results.completeCostQuetzales
-                  )}) supera el 20% del ticket (Q${formatCurrency(
-                    results.ticketPercentageQuetzales
-                  )}).`
-            }
-          </strong></p>
-        </div>
-        
-        <div class="footer">
-          <p>Documento generado el ${getCurrentDate()} • 1bot</p>
+            </strong></p>
+          </div>
+
+          <div class="footer">
+            <p>Documento generado el ${getCurrentDate()} • 1bot</p>
+          </div>
         </div>
       </body>
       </html>
@@ -272,7 +287,12 @@ const OrderPrint = ({ results }) => {
     printWindow.document.close();
     printWindow.onload = function () {
       printWindow.focus();
-      printWindow.print();
+
+      // Set timeout to ensure styles are applied before printing
+      setTimeout(() => {
+        printWindow.print();
+        // printWindow.close(); // Opcional: cerrar después de imprimir
+      }, 500);
     };
   };
 
@@ -289,7 +309,7 @@ const OrderPrint = ({ results }) => {
   };
 
   return (
-    <div className="flex sm:justify-center justify-end  mb-4">
+    <div className="flex sm:justify-center justify-end mb-4">
       <button
         type="button"
         onClick={handlePrint}
