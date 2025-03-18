@@ -6,13 +6,13 @@ import logo from "../assets/logo.svg";
 function Login({ onLogin }) {
   // const [phrase, setPhrase] = useState("");
 
-  // const handleMasterPhraseLogin = () => {
-  //   if (phrase === MASTER_PHRASE) {
-  //     onLogin(true);
-  //   } else {
-  //     alert("Frase maestra incorrecta. Por favor intenta de nuevo.");
-  //   }
-  // };
+  const handleMasterPhraseLogin = () => {
+    if (phrase === MASTER_PHRASE) {
+      onLogin(true);
+    } else {
+      alert("Frase maestra incorrecta. Por favor intenta de nuevo.");
+    }
+  };
 
   const handleGoogleLoginSuccess = (credentialResponse) => {
     console.log("Inicio con Google Exitoso:", credentialResponse);
@@ -33,7 +33,7 @@ function Login({ onLogin }) {
         });
         window.google.accounts.id.renderButton(
           document.getElementById("google-login-button"),
-          {}
+          { theme: "outline", size: "large" }
         );
       } else {
         // If window.google is not available, try again after a short delay
@@ -74,14 +74,14 @@ function Login({ onLogin }) {
         </div>
         <div className="flex items-center justify-between mb-4">
           <button
-            className="bg-[#FF259D] w-full hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-[#FF259D] hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
             onClick={handleMasterPhraseLogin}
           >
             Ingresar
           </button>
         </div> */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4">
           <div id="google-login-button"></div>
         </div>
       </div>
