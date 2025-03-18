@@ -86,7 +86,7 @@ function Login({ onLogin }) {
             Ingresar
           </button>
         </div> */}
-        <div className="mb-4 w-full">
+        <div className="mb-4 w-full justify-center items-center">
           <div
             id="google-login-button"
             className="w-full"
