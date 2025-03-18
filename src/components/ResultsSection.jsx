@@ -4,6 +4,8 @@ import OrderPrint from "./OrderPrint";
 import ResultsChart from "./ResultsChart";
 import { formatCurrency, formatInteger } from "../utils/formatters";
 
+const FACTOR_CONVERSION = 7.9;
+
 const ResultsSection = ({ results, isCalculated }) => {
   if (!isCalculated) {
     return (
@@ -69,10 +71,10 @@ const ResultsSection = ({ results, isCalculated }) => {
                         {formatInteger(info.kits)}
                       </td>
                       <td className="px-3 py-2 text-right text-sm border-gray-200 border">
-                        Q{formatCurrency(info.kitPrice * 7.5)}
+                        Q{formatCurrency(info.kitPrice * FACTOR_CONVERSION)}
                       </td>
                       <td className="px-3 py-2 text-right text-sm border-gray-200 border">
-                        Q{formatCurrency(info.cost * 7.5)}
+                        Q{formatCurrency(info.cost * FACTOR_CONVERSION)}
                       </td>
                     </tr>
                   ))}
