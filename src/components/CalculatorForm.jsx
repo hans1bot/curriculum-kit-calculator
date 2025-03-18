@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Info, IterationCcw } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
 
-const FACTOR_CONVERSION = 7.5; // Q7.5 = $1
+const FACTOR_CONVERSION = 7.9; // Q7.9 = $1
 
 const initialDivisions = {
   Preescolar: 140, // mTiny
