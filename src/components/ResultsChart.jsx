@@ -41,10 +41,12 @@ const ResultsChart = ({ data }) => {
           cx="50%"
           cy="50%"
           label={({ name, percent }) =>
-            `${name}: ${(percent * 100).toFixed(0)}%`
+            window.innerWidth < 640
+              ? `${(percent * 100).toFixed(0)}%`
+              : `${name}: ${(percent * 100).toFixed(0)}%`
           }
-          labelLine={true}
-          outerRadius={100}
+          labelLine={window.innerWidth >= 640}
+          outerRadius={window.innerWidth < 640 ? 70 : 100}
           fill="#8884d8"
           dataKey="value"
         >

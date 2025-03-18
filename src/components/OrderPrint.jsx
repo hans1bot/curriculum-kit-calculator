@@ -156,8 +156,8 @@ const OrderPrint = ({ results }) => {
                           ? "Codey Rocky"
                           : division === "Primaria Alta" ||
                             division === "Secundaria Baja"
-                          ? "mBot V1"
-                          : "mBot V2"
+                          ? "mBot"
+                          : "mBot2"
                       }
                     </td>
                     <td style="text-align: right">${formatInteger(
@@ -302,11 +302,11 @@ const OrderPrint = ({ results }) => {
   };
 
   return (
-    <div className="flex justify-end mb-4">
+    <div className="flex sm:justify-center justify-end  mb-4">
       <button
         type="button"
         onClick={handlePrint}
-        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer font-medium hover:bg-blue-700 transition-colors"
+        className="flex items-center px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base bg-blue-600 text-white rounded-md cursor-pointer font-medium hover:bg-blue-700 transition-colors"
       >
         <Printer className="mr-2" size={18} />
         Imprimir Orden de Pedido

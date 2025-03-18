@@ -7,9 +7,9 @@ const FACTOR_CONVERSION = 7.5; // Q7.5 = $1
 const initialDivisions = {
   Preescolar: 140, // mTiny
   "Primaria Baja": 120, // Codey Rocky
-  "Primaria Alta": 75, // mBot V1
-  "Secundaria Baja": 75, // mBot V1
-  "Secundaria Alta": 140, // mBot V2
+  "Primaria Alta": 75, // mBot
+  "Secundaria Baja": 75, // mBot
+  "Secundaria Alta": 140, // mBot2
 };
 
 import { formatCurrency, formatInteger } from "../utils/formatters";
@@ -180,7 +180,7 @@ const CalculatorForm = ({ setResults, results, setIsCalculated }) => {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col">
                 <label className="text-sm font-medium">
                   Costo por Licencia (Q)
@@ -285,8 +285,8 @@ const CalculatorForm = ({ setResults, results, setIsCalculated }) => {
                           ? "Codey Rocky"
                           : division === "Primaria Alta" ||
                             division === "Secundaria Baja"
-                          ? "mBot V1"
-                          : "mBot V2"}
+                          ? "mBot"
+                          : "mBot2"}
                       </div>
                     </div>
                   </div>
