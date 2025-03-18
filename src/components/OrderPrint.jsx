@@ -261,19 +261,6 @@ const OrderPrint = ({ results }) => {
           </strong></p>
         </div>
         
-        <div class="signatures">
-          <div class="signature">
-            <div class="signature-line">
-              <p>Solicitado por</p>
-            </div>
-          </div>
-          <div class="signature">
-            <div class="signature-line">
-              <p>Autorizado por</p>
-            </div>
-          </div>
-        </div>
-        
         <div class="footer">
           <p>Documento generado el ${getCurrentDate()} • 1bot</p>
         </div>
