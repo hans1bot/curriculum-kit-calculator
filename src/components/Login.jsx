@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
 
-const MASTER_PHRASE = "1botGT"; // Hardcoded master phrase
+const MASTER_PHRASE = "1botGT";
 
 function Login({ onLogin }) {
   const [phrase, setPhrase] = useState("");
 
   const handleMasterPhraseLogin = () => {
     if (phrase === MASTER_PHRASE) {
-      onLogin(true); // Successful login
+      onLogin(true);
     } else {
       alert("Frase maestra incorrecta. Por favor intenta de nuevo.");
     }
@@ -16,7 +16,6 @@ function Login({ onLogin }) {
 
   const handleGoogleLoginSuccess = (credentialResponse) => {
     console.log("Inicio con Google Exitoso:", credentialResponse);
-    // Here you would typically verify the token with a backend, but for this example, we'll just authenticate directly.
     onLogin(true);
   };
 
@@ -24,20 +23,25 @@ function Login({ onLogin }) {
     alert("Inicio con Google Fallo. Por favor intenta de nuevo.");
   };
 
-  // Initialize Google Sign-In when component mounts
   React.useEffect(() => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id:
-          "975236426037-nh30851j3ve16707tb5jck455g8qlcav.apps.googleusercontent.com",
-        callback: handleGoogleLoginSuccess,
-      });
-      window.google.accounts.id.renderButton(
-        document.getElementById("google-login-button"),
-        { theme: "outline", size: "large" } // customization attributes
-      );
-      window.google.accounts.id.prompt(); // to display the One Tap dialog
-    }
+    const initializeGoogleSignIn = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id:
+            "975236426037-nh30851j3ve16707tb5jck455g8qlcav.apps.googleusercontent.com",
+          callback: handleGoogleLoginSuccess,
+        });
+        window.google.accounts.id.renderButton(
+          document.getElementById("google-login-button"),
+          { theme: "outline", size: "large" }
+        );
+      } else {
+        // If window.google is not available, try again after a short delay
+        setTimeout(initializeGoogleSignIn, 100); // Try every 100ms
+      }
+    };
+
+    initializeGoogleSignIn();
   }, []);
 
   return (
@@ -70,10 +74,9 @@ function Login({ onLogin }) {
         </div>
         <div className="flex items-center justify-between mb-4">
           <button
-            className="bg-ff259d hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-[#FF259D] w-full hover:bg-pink-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
             onClick={handleMasterPhraseLogin}
-            style={{ backgroundColor: "#FF259D" }}
           >
             Ingresar
           </button>
