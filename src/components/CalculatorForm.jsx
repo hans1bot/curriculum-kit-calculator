@@ -255,7 +255,7 @@ const CalculatorForm = ({ setResults, results, setIsCalculated }) => {
         {/* Students Input Section (Grouped by Level) */}
         <div className="section-container bg-white border border-gray-200 p-4 rounded-md space-y-6">
           <h3 className="text-lg font-semibold">
-            Cantidad de Estudiantes por División
+            Cantidad de Estudiantes por Sección mas Grande del Nivel
           </h3>
           {Object.entries(groupedDivisions).map(([groupName, divisionKeys]) => (
             <div
